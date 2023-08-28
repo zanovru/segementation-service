@@ -1,0 +1,40 @@
+version: "3.8"
+
+services:
+  postgres:
+    container_name: segment-service-db
+    image: postgres
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    networks:
+      - service-network
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+      - DATABASE_HOST=${DB_HOST}
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
+    restart: unless-stopped
+
+  app:
+    container_name: segment-service
+    build:
+      context: .
+      dockerfile: ./deployments/Dockerfile
+    networks:
+      - service-network
+    environment:
+      - SERVER_PORT=${SERVER_PORT}
+    ports:
+      - "${SERVER_PORT}:${SERVER_PORT}"
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+volumes:
+  pg-data:
+
+networks:
+  service-network:
+    driver: bridge

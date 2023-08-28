@@ -8,14 +8,14 @@ import (
 )
 
 func Run(configPath string) {
-	config, err := config.Init(configPath)
+	appConfig, err := config.Init(configPath)
 	if err != nil {
 		log.Fatalf("Config error: %s", err)
 	}
 
 	routing := handlers.NewRouting()
 	server := api.NewServer()
-	if err = server.Start(routing.InitRoutes(), config); err != nil {
+	if err = server.Start(routing.InitRoutes(), appConfig); err != nil {
 		log.Fatalf("Server error: %s", err)
 	}
 }

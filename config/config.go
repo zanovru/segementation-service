@@ -7,11 +7,22 @@ import (
 )
 
 type Config struct {
-	Server struct {
-		Port         string `env-required:"true" yaml:"port" env:"PORT" env_default:"8000"`
-		ReadTimeout  int    `yaml:"read-timeout" env:"SERVER_READ_TIMEOUT" env_default:"10"`
-		WriteTimeout int    `yaml:"write-timeout" env:"SERVER_WRITE_TIMEOUT" env_default:"10"`
-	} `yaml:"server"`
+	Server
+	DB
+}
+
+type Server struct {
+	Port         string `yaml:"port" env:"SERVER_PORT" env_default:"8000"`
+	ReadTimeout  int    `yaml:"read-timeout" env:"SERVER_READ_TIMEOUT" env_default:"10"`
+	WriteTimeout int    `yaml:"write-timeout" env:"SERVER_WRITE_TIMEOUT" env_default:"10"`
+}
+
+type DB struct {
+	Host     string `yaml:"host" env:"DB_HOST" env_default:"0.0.0.0"`
+	Port     string `yaml:"port" env:"DB_PORT" env_default:"5432"`
+	User     string `yaml:"user" env:"DB_USER" env-required:"true"`
+	Password string `yaml:"password" env:"DB_PASSWORD" env-required:"true"`
+	Name     string `yaml:"name" env:"DB_NAME" env_default:"segment_db"`
 }
 
 func Init(configFile string) (*Config, error) {

@@ -2,3 +2,11 @@ server:
   port: "8080"
   read-timeout: 10
   write-timeout: 10
+
+db:
+  port: 5432
+  host: "0.0.0.0"
+  user: "user"
+  password: "password"
+  name: "segment_db"
+
