@@ -20,3 +20,4 @@ COPY --from=builder /app/config config
 EXPOSE 8080
 
 CMD ["/app/segment-service"]
+

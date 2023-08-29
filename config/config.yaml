@@ -4,9 +4,9 @@ server:
   write-timeout: 10
 
 db:
-  port: 5432
-  host: "0.0.0.0"
-  user: "user"
-  password: "password"
+  port: "5432"
+  host: "postgres"
+  user: "admin"
+  password: "pass"
   name: "segment_db"
 

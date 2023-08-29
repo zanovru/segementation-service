@@ -5,6 +5,9 @@ import (
 	"segmenatationService/config"
 	"segmenatationService/internal/api"
 	"segmenatationService/internal/api/handlers"
+	"segmenatationService/internal/repository"
+	"segmenatationService/internal/repository/postgres"
+	"segmenatationService/internal/services"
 )
 
 func Run(configPath string) {
@@ -13,7 +16,17 @@ func Run(configPath string) {
 		log.Fatalf("Config error: %s", err)
 	}
 
-	routing := handlers.NewRouting()
+	db, err := postgres.NewPostgresDB(appConfig)
+	if err != nil {
+		log.Fatalf("Error occured when connecting to PostgreSQL Database: %s", err)
+	}
+
+	repos := repository.NewRepository(db)
+
+	service := services.NewService(repos)
+
+	routing := handlers.NewRouting(service)
+
 	server := api.NewServer()
 	if err = server.Start(routing.InitRoutes(), appConfig); err != nil {
 		log.Fatalf("Server error: %s", err)
