@@ -1,7 +1,8 @@
 package models
 
 type User struct {
-	Name             string    `json:"name"`
-	SegmentsToAdd    []Segment `json:"segmentsToAdd"`
-	SegmentsToDelete []Segment `json:"segmentsToDelete"`
+	Id               int      `json:"id" db:"id"`
+	Email            string   `json:"email" db:"email" binding:"required,email"`
+	SegmentsToAdd    []string `json:"segmentsToAdd"`
+	SegmentsToDelete []string `json:"segmentsToDelete"`
 }

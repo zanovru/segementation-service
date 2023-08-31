@@ -7,10 +7,14 @@ import (
 
 type Service struct {
 	contracts.SegmentServiceContract
+	contracts.UserServiceContract
 }
 
 func NewService(repo *repository.Repository) *Service {
 	return &Service{
 		SegmentServiceContract: NewSegmentService(repo.SegmentRepositoryContract),
+		UserServiceContract: NewUserService(repo.UserRepositoryContract,
+			repo.SegmentRepositoryContract,
+			repo.UserSegmentRepositoryContract),
 	}
 }

@@ -16,6 +16,7 @@ WORKDIR /app
 
 COPY --from=builder /app/build/segment-service .
 COPY --from=builder /app/config config
+COPY --from=builder /app/.env .
 
 EXPOSE 8080
 

@@ -1,13 +1,19 @@
 package app
 
 import (
+	"context"
+	"errors"
 	log "github.com/sirupsen/logrus"
+	"net/http"
+	"os"
+	"os/signal"
 	"segmenatationService/config"
 	"segmenatationService/internal/api"
 	"segmenatationService/internal/api/handlers"
 	"segmenatationService/internal/repository"
 	"segmenatationService/internal/repository/postgres"
 	"segmenatationService/internal/services"
+	"syscall"
 )
 
 func Run(configPath string) {
@@ -28,7 +34,16 @@ func Run(configPath string) {
 	routing := handlers.NewRouting(service)
 
 	server := api.NewServer()
-	if err = server.Start(routing.InitRoutes(), appConfig); err != nil {
-		log.Fatalf("Server error: %s", err)
-	}
+	go func() {
+		if err = server.Start(routing.InitRoutes(), appConfig); err != nil && !errors.Is(err, http.ErrServerClosed) {
+			log.Fatalf("Server error: %s", err)
+		}
+	}()
+
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT)
+
+	<-quit
+
+	server.Shutdown(context.Background())
 }

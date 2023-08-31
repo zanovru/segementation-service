@@ -6,7 +6,7 @@ server:
 db:
   port: "5432"
   host: "postgres"
-  user: "admin"
-  password: "pass"
+  user: "fake user"
+  password: "fake pass"
   name: "segment_db"
 
