@@ -13,6 +13,7 @@ type UserRepositoryContract interface {
 	CreateUser(*models.User) (int, error)
 	GetUserByEmail(string) (*models.User, error)
 	GetUser(int) (*models.User, error)
+	GetUsers() ([]models.User, error)
 }
 
 type UserSegmentRepositoryContract interface {

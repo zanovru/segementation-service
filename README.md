@@ -24,7 +24,6 @@
 Все действия с проектом происходят с помощью Makefile
 
 
-
 ### **Работа с сервисом** 
 Поднять сервис локально
 ```
@@ -61,6 +60,14 @@ make migrate-down
 make migrate-drop
 ```
 
+## Swagger
+Для работы с нижеперечисленными методами предоставляется интерфейс Swagger UI, который доступен по адресу:
+```
+http://localhost:8080/swagger/index.html
+```` 
+
+![Swagger](https://imageupload.io/ib/THElLxWDwBPnDsg_1693503262.png)
+
 ## Примеры запросов
 
 ### Метод создания сегмента
@@ -69,6 +76,21 @@ curl --location 'localhost:8080/api/v1/segments' \
 --header 'Content-Type: application/json' \
 --data '{
     "slug" : "test1"
+}'
+```
+### Пример ответа
+```json
+{
+    "id": 1
+}
+```
+### Метод создания сегмента c заданным процентом пользователей 
+```curl
+curl --location 'localhost:8080/api/v1/segmentsProb' \
+--header 'Content-Type: application/json' \
+--data '{
+    "slug" : "test1",
+    "probability" : 0.1
 }'
 ```
 ### Пример ответа

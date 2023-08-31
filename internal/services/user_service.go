@@ -15,14 +15,14 @@ type UserService struct {
 	userSegmentRepo contracts.UserSegmentRepositoryContract
 }
 
-func (u *UserService) GetUser(id int) (*models.User, error) {
-	return u.userRepo.GetUser(id)
-}
-
 func NewUserService(userRepo contracts.UserRepositoryContract,
 	segmentRepo contracts.SegmentRepositoryContract,
 	userSegmentRepo contracts.UserSegmentRepositoryContract) *UserService {
 	return &UserService{userRepo: userRepo, segmentRepo: segmentRepo, userSegmentRepo: userSegmentRepo}
+}
+
+func (u *UserService) GetUser(id int) (*models.User, error) {
+	return u.userRepo.GetUser(id)
 }
 
 func (u *UserService) CreateUserWithSegments(user *models.User) (int, error) {

@@ -53,3 +53,30 @@ func (r *Routing) deleteSegmentBySlug(c *gin.Context) {
 
 	c.JSON(http.StatusOK, segmentResource)
 }
+
+// @Summary Create segment with probability
+// @Description Create segment with given slug and adds automatically users with probability
+// @Accept  json
+// @Produce  json
+// @Param data body models.SegmentProb true "Segment"
+// @Success 200 {object} []resources.SegmentResource
+// @Failure 400 {object} resources.ErrorResponse
+// @Router /segmentsProb [post]
+func (r *Routing) createSegmentWithProbability(c *gin.Context) {
+	segmentProb := &models.SegmentProb{}
+	if err := c.BindJSON(segmentProb); err != nil {
+		resources.NewErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	segmentId, err := r.service.CreateSegment(segmentProb.ToSegmentModel())
+	if err != nil {
+		resources.NewErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	r.service.CreateUserSegmentWithProb(segmentId, segmentProb.Probability)
+
+	segmentResource := resources.NewSegmentResource(segmentId)
+	c.JSON(http.StatusCreated, segmentResource)
+}

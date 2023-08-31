@@ -45,7 +45,7 @@ func (u *UserPostgres) GetUserByEmail(email string) (*models.User, error) {
 
 func (u *UserPostgres) GetUser(id int) (*models.User, error) {
 	user := &models.User{}
-	query := fmt.Sprintf("SELECT id, email FROM %s WHERE id=$1", usersTable)
+	query := fmt.Sprintf("SELECT id, email FROM %s ", usersTable)
 	if err := u.db.QueryRowx(query, id).StructScan(user); err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, ErrUserNotFound
@@ -53,4 +53,13 @@ func (u *UserPostgres) GetUser(id int) (*models.User, error) {
 		return nil, err
 	}
 	return user, nil
+}
+
+func (u *UserPostgres) GetUsers() ([]models.User, error) {
+	var users []models.User
+	query := fmt.Sprintf("SELECT id, email FROM %s", usersTable)
+	if err := u.db.Select(&users, query); err != nil {
+		return nil, err
+	}
+	return users, nil
 }

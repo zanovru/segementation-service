@@ -24,6 +24,7 @@ func (r *Routing) InitRoutes() *gin.Engine {
 		v1.DELETE("/segments/:slug", r.deleteSegmentBySlug)
 		v1.POST("/users", r.createUserWithSegments)
 		v1.GET("/users/:id/segments", r.getUserSegments)
+		v1.POST("/segmentsProb", r.createSegmentWithProbability)
 	}
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 

@@ -9,6 +9,18 @@ definitions:
     required:
     - slug
     type: object
+  models.SegmentProb:
+    properties:
+      id:
+        type: integer
+      probability:
+        type: number
+      slug:
+        type: string
+    required:
+    - probability
+    - slug
+    type: object
   models.User:
     properties:
       email:
@@ -109,6 +121,33 @@ paths:
           schema:
             $ref: '#/definitions/resources.ErrorResponse'
       summary: Delete segment by slug
+  /segmentsProb:
+    post:
+      consumes:
+      - application/json
+      description: Create segment with given slug and adds automatically users with
+        probability
+      parameters:
+      - description: Segment
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.SegmentProb'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/resources.SegmentResource'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/resources.ErrorResponse'
+      summary: Create segment with probability
   /users:
     post:
       consumes:

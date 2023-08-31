@@ -93,6 +93,46 @@ const docTemplate = `{
                 }
             }
         },
+        "/segmentsProb": {
+            "post": {
+                "description": "Create segment with given slug and adds automatically users with probability",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Create segment with probability",
+                "parameters": [
+                    {
+                        "description": "Segment",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.SegmentProb"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/resources.SegmentResource"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/resources.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/users": {
             "post": {
                 "description": "Create user with segments that should be added to User and segments that should be deleted from User",
@@ -181,6 +221,24 @@ const docTemplate = `{
             "properties": {
                 "id": {
                     "type": "integer"
+                },
+                "slug": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.SegmentProb": {
+            "type": "object",
+            "required": [
+                "probability",
+                "slug"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "probability": {
+                    "type": "number"
                 },
                 "slug": {
                     "type": "string"

@@ -12,3 +12,7 @@ type UserServiceContract interface {
 	CreateUserWithSegments(user *models.User) (int, error)
 	GetUser(int) (*models.User, error)
 }
+
+type UserSegmentServiceContract interface {
+	CreateUserSegmentWithProb(int, float64) error
+}
